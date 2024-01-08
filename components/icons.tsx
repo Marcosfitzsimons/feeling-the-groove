@@ -19,7 +19,9 @@ import {
   User,
   X,
   Sun,
+  PartyPopper,
   Waves,
+  LogOut,
 } from "lucide-react";
 
 export const Icons = {
@@ -30,9 +32,11 @@ export const Icons = {
   chevronRight: ChevronRight,
   trash: Trash,
   media: Image,
+  logout: LogOut,
   settings: Settings,
   ellipsis: MoreVertical,
   add: Plus,
+  party: PartyPopper,
   warning: AlertTriangle,
   sun: Sun,
   user: User,
