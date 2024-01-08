@@ -11,7 +11,9 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { User } from "next-auth";
 import UserAccount from "./user-account";
-import SideBar from "./side-bar";
+import SideBarItems from "./side-bar-items";
+import { Nav } from "./nav";
+import { Icons } from "./icons";
 
 interface RavesContainerProps {
   defaultLayout: number[] | undefined;
@@ -44,7 +46,7 @@ const RavesContainer = ({
           collapsedSize={navCollapsedSize}
           collapsible={true}
           minSize={15}
-          maxSize={20}
+          maxSize={18}
           onCollapse={() => {
             setIsCollapsed(true);
             document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(
@@ -78,136 +80,23 @@ const RavesContainer = ({
             />
           </div>
           <Separator />
-          <SideBar />
-
-          {/* <Nav
-            isCollapsed={isCollapsed}
-            links={[
-              {
-                title: "Dashboard",
-                label: "",
-                icon: LayoutDashboard,
-                variant: "default",
-                link: "/dashboard/",
-              },
-              {
-                title: "Transactions",
-                label: "9",
-                icon: Layers,
-                variant: "ghost",
-                link: "/dashboard/transactions",
-              },
-              {
-                title: "Accounts",
-                label: "3",
-                icon: CreditCard,
-                variant: "ghost",
-                link: "/dashboard/accounts",
-              },
-              {
-                title: "Investments",
-                label: "",
-                icon: BarChart,
-                variant: "ghost",
-                link: "/dashboard/investments",
-              },
-              {
-                title: "Categories",
-                label: "",
-                icon: Tag,
-                variant: "ghost",
-                link: "/dashboard/",
-              },
-              {
-                title: "Recurring",
-                label: "",
-                icon: Repeat2,
-                variant: "ghost",
-                link: "/dashboard/",
-              },
-            ]}
-          />
-          <Separator />
           <Nav
             isCollapsed={isCollapsed}
             links={[
               {
-                title: "Credit Card",
-                label: "972",
-                icon: CreditCard,
-                variant: "ghost",
-                link: "/dashboard/",
+                title: "Raves",
+                icon: Icons.party,
+                link: "/raves",
               },
               {
-                title: "Credit Card",
-                label: "342",
-                icon: CreditCard,
-                variant: "ghost",
-                link: "/dashboard/",
-              },
-              {
-                title: "Checking",
-                label: "128",
-                icon: DollarSign,
-                variant: "ghost",
-                link: "/dashboard/",
-              },
-              {
-                title: "Savings",
-                label: "8",
-                icon: PiggyBank,
-                variant: "ghost",
-                link: "/dashboard/",
-              },
-              {
-                title: "Banking",
-                label: "21",
-                icon: Building,
-                variant: "ghost",
-                link: "/dashboard/",
+                title: "New Rave",
+                icon: Icons.add,
+                link: "/raves/new-rave",
               },
             ]}
           />
           <Separator />
-          <Nav
-            isCollapsed={isCollapsed}
-            links={[
-              {
-                title: "Funds",
-                label: "483",
-                icon: Briefcase,
-                variant: "ghost",
-                link: "/dashboard/",
-              },
-              {
-                title: "Coinbase",
-                label: "145",
-                icon: BadgeDollarSign,
-                variant: "ghost",
-                link: "/dashboard/",
-              },
-            ]}
-          />
-          <Separator />
-          <Nav
-            isCollapsed={isCollapsed}
-            links={[
-              {
-                title: "Get help",
-                label: "",
-                icon: HelpCircle,
-                variant: "ghost",
-                link: "/dashboard/",
-              },
-              {
-                title: "Settings",
-                label: "",
-                icon: Settings,
-                variant: "ghost",
-                link: "/dashboard/",
-              },
-            ]}
-          /> */}
+          <SideBarItems isCollapsed={isCollapsed} />
         </ResizablePanel>
         <ResizableHandle withHandle />
         <ResizablePanel defaultSize={defaultLayout[1]} minSize={30}>
