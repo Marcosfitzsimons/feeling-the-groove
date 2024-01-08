@@ -7,7 +7,7 @@ import {
   ResizablePanelGroup,
 } from "./ui/resizable";
 import { Separator } from "./ui/separator";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { User } from "next-auth";
 import UserAccount from "./user-account";

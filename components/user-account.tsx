@@ -5,7 +5,7 @@ import { UserAvatar } from "./user-avatar";
 
 interface UserAccountProps extends React.HTMLAttributes<HTMLDivElement> {
   user: Pick<User, "name" | "image" | "email">;
-  isCollapsed: boolean;
+  isCollapsed?: boolean;
 }
 
 const UserAccount = ({ user, isCollapsed }: UserAccountProps) => {
