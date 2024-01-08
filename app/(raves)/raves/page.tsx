@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { isValidJSONString } from "@/lib/utils";
 import RavesContainer from "@/components/raves-container";
 
-export default async function Home() {
+export default async function RavePage() {
   const user = await getCurrentUser();
 
   if (!user) {
@@ -26,16 +26,18 @@ export default async function Home() {
 
   return (
     <div className="">
-      <RavesContainer
-        user={{
-          name: user.name || null,
-          image: user.image || null,
-          email: user.email || null,
-        }}
-        defaultLayout={defaultLayout}
-        defaultCollapsed={defaultCollapsed}
-        navCollapsedSize={4}
-      />
+      <div className="hidden md:flex">
+        <RavesContainer
+          user={{
+            name: user.name || null,
+            image: user.image || null,
+            email: user.email || null,
+          }}
+          defaultLayout={defaultLayout}
+          defaultCollapsed={defaultCollapsed}
+          navCollapsedSize={4}
+        />
+      </div>
     </div>
   );
 }
