@@ -8,7 +8,21 @@ export type SiteConfig = {
     links: {
       github: string
     }
-  }
+}
+
+export type Rave = {
+  id: string
+  name: string
+  ayn: number
+  genre: string
+  location: string
+  quantity?: Decimal
+  rank: number
+  candy?: string | null
+  anecdotes?: string | null
+  djs: string
+  date: Date
+}
 
 export type NavItem = {
   title: string
