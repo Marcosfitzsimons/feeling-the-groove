@@ -66,12 +66,14 @@ model VerificationToken {
 
 model Rave {
     id        String   @id @default(cuid())
+    date      DateTime
     name      String
     ayn       Int
     genre     String
     location  String
+    djs       String
     candy     String?
-    quantity  Decimal?
+    quantity  Decimal? @db.Decimal(2, 1)
     anecdotes String?
     rank      Int
     createdAt DateTime @default(now()) @map(name: "created_at")
