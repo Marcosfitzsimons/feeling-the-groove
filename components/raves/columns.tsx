@@ -3,7 +3,7 @@
 import { Rave } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { format } from "date-fns";
+import { addMinutes, format } from "date-fns";
 import { StarRating } from "../ui/star-rating";
 import {
   Tooltip,
@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/tooltip";
 import { Icons } from "../icons";
 import { Button } from "../ui/button";
+import { correctDateFormat } from "@/lib/utils";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -33,8 +34,7 @@ export const columns: ColumnDef<Rave>[] = [
     },
     cell: ({ row }) => {
       const dbDate: Date = row.getValue("date");
-      const formattedDateForDisplay = format(dbDate, "dd/MM/yyyy");
-      return <div className="font-medium">{formattedDateForDisplay}</div>;
+      return <div className="font-medium">{correctDateFormat(dbDate)}</div>;
     },
   },
   {
