@@ -17,8 +17,14 @@ import Link from "next/link";
 import { Separator } from "./ui/separator";
 import Logo from "./logo";
 import MobileNavItems from "./mobile-nav-items";
+import UserAccount from "./user-account";
+import { User } from "next-auth";
 
-export function MobileNavigation() {
+interface MobileNavigationProps {
+  user: Pick<User, "name" | "image" | "email">;
+}
+
+export function MobileNavigation({ user }: MobileNavigationProps) {
   const pathname = usePathname();
 
   // to do:
@@ -44,12 +50,15 @@ export function MobileNavigation() {
           </Button>
         </SheetTrigger>
         <SheetContent side="left" className="flex flex-col gap-2">
-          <SheetHeader className="mt-4 mb-2">
+          <SheetHeader className="my-2">
             <SheetTitle className="flex h-[52px] items-center justify-center text-start">
               <Logo />
-              {/* <UserAccount user={user} /> */}
             </SheetTitle>
           </SheetHeader>
+          <div className="mb-2">
+            <UserAccount user={user} />
+          </div>
+
           <nav className="w-full grid gap-1">
             {navConfig.mainNav.map((navItem) => {
               return (

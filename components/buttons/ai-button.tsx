@@ -40,7 +40,7 @@ const AiButton = ({ isCollapsed }: AiButtonProps) => {
             className={cn(
               buttonVariants({
                 variant: "ghost",
-                size: "sm",
+                size: "md",
               }),
               " justify-start bg-transparent text-foreground px-3 "
             )}

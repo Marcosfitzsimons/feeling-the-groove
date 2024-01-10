@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { cn } from "@/lib/utils";
+import { Separator } from "../ui/separator";
 
 interface ModeToggleProps {
   isCollapsed: boolean;
@@ -56,7 +57,7 @@ export function ModeToggle({ isCollapsed }: ModeToggleProps) {
               className={cn(
                 buttonVariants({
                   variant: "ghost",
-                  size: "sm",
+                  size: "md",
                 }),
                 "justify-start bg-transparent text-foreground px-3"
               )}
@@ -67,13 +68,24 @@ export function ModeToggle({ isCollapsed }: ModeToggleProps) {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent side="bottom" align="start">
-            <DropdownMenuItem onClick={() => setTheme("light")}>
-              Light
+            <DropdownMenuItem
+              onClick={() => setTheme("light")}
+              className="flex items-center gap-2"
+            >
+              <Icons.sun className="w-3.5 aspect-square" /> Light
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setTheme("dark")}>
+            <DropdownMenuItem
+              onClick={() => setTheme("dark")}
+              className="flex items-center gap-2"
+            >
+              <Icons.moonStar className="w-3.5 aspect-square" />
               Dark
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setTheme("system")}>
+            <DropdownMenuItem
+              onClick={() => setTheme("system")}
+              className="flex items-center gap-2"
+            >
+              <Icons.monitor className="w-3.5 aspect-square" />
               System
             </DropdownMenuItem>
           </DropdownMenuContent>
