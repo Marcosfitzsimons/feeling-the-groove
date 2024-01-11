@@ -16,12 +16,36 @@ export type Rave = {
   ayn: number
   genre: string
   location: string
-  quantity?: Decimal
   rank: number
   candy?: string | null
+  quantity?: Decimal | null
   anecdotes?: string | null
   djs: string
   date: Date
+}
+
+type ConnectId = {
+  id: string
+}
+
+type connect = {
+  connect: connectId
+}
+
+type AuthorConnect = { id: string };
+
+export type RavePayload = {
+  name: string
+  ayn: number
+  genre: string
+  location: string
+  rank: number
+  candy?: string | null
+  quantity?: Decimal | null
+  anecdotes?: string | null
+  djs: string
+  date: string,
+  author: { connect: AuthorConnect };
 }
 
 export type NavItem = {
