@@ -3,10 +3,14 @@ import { cookies } from "next/headers";
 import { getCurrentUser } from "@/lib/session";
 import { redirect } from "next/navigation";
 import { isValidJSONString } from "@/lib/utils";
-import RavesContainer from "@/components/raves-container";
+import RavesResizableContainer from "@/components/raves/raves-resizable-container";
+import { RavesDatatable } from "@/components/raves/raves-datatable";
+import { columns } from "@/components/raves/columns";
+import { getAllRaves } from "@/lib/raves";
 
 export default async function RavePage() {
   const user = await getCurrentUser();
+  const raves = await getAllRaves();
 
   if (!user) {
     redirect(authOptions?.pages?.signIn || "/login");
@@ -27,7 +31,7 @@ export default async function RavePage() {
   return (
     <div className="">
       <div className="hidden md:flex">
-        <RavesContainer
+        <RavesResizableContainer
           user={{
             name: user.name || null,
             image: user.image || null,
@@ -36,7 +40,11 @@ export default async function RavePage() {
           defaultLayout={defaultLayout}
           defaultCollapsed={defaultCollapsed}
           navCollapsedSize={4}
+          raves={raves}
         />
+      </div>
+      <div className="h-screen md:hidden">
+        <RavesDatatable data={raves} columns={columns} />
       </div>
     </div>
   );

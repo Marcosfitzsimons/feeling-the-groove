@@ -3,7 +3,6 @@
 import { Rave } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { addMinutes, format } from "date-fns";
 import { StarRating } from "../ui/star-rating";
 import {
   Tooltip,
@@ -94,14 +93,13 @@ export const columns: ColumnDef<Rave>[] = [
     },
   },
   {
-    accessorKey: "name",
-    header: "Nombre",
-  },
-  {
     accessorKey: "djs",
     header: "Djs",
   },
-
+  {
+    accessorKey: "name",
+    header: "Name",
+  },
   {
     accessorKey: "genre",
     header: "Genre",
