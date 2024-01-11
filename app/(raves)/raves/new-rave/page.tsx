@@ -1,5 +1,6 @@
 import NewRaveContainer from "@/components/new-rave-container";
 import { authOptions } from "@/lib/auth";
+import { getNearestPastRave } from "@/lib/raves";
 import { getCurrentUser } from "@/lib/session";
 import { isValidJSONString } from "@/lib/utils";
 import { cookies } from "next/headers";
@@ -29,11 +30,14 @@ const NewRavePage = async () => {
       ? JSON.parse(collapsed.value)
       : undefined;
 
+  const nearestPastDate = await getNearestPastRave();
+  console.log(user);
   return (
     <div>
       <div className="hidden md:flex">
         <NewRaveContainer
           user={{
+            id: user.id,
             name: user.name || null,
             image: user.image || null,
             email: user.email || null,
@@ -41,6 +45,7 @@ const NewRavePage = async () => {
           defaultLayout={defaultLayout}
           defaultCollapsed={defaultCollapsed}
           navCollapsedSize={4}
+          nearestPastDate={nearestPastDate}
         />
       </div>
     </div>

@@ -14,12 +14,14 @@ import UserAccount from "./user-account";
 import SideBarItems from "./side-bar-items";
 import { Nav } from "./nav";
 import { Icons } from "./icons";
+import NewRaveForm from "./new-rave-form";
 
 interface NewRaveContainerProps {
   defaultLayout: number[] | undefined;
   defaultCollapsed?: boolean;
   navCollapsedSize: number;
-  user: Pick<User, "name" | "image" | "email">;
+  user: Pick<User, "name" | "image" | "email" | "id">;
+  nearestPastDate: Date | null;
 }
 
 const NewRaveContainer = ({
@@ -27,6 +29,7 @@ const NewRaveContainer = ({
   defaultLayout = [265, 440, 655],
   defaultCollapsed = false,
   navCollapsedSize,
+  nearestPastDate,
 }: NewRaveContainerProps) => {
   const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed);
 
@@ -101,7 +104,10 @@ const NewRaveContainer = ({
         <ResizableHandle withHandle />
         <ResizablePanel defaultSize={defaultLayout[1]} minSize={30}>
           <div className="h-screen flex items-center justify-center">
-            <p>New Rave Form here...</p>
+            <NewRaveForm
+              nearestPastDate={nearestPastDate}
+              user={{ id: user.id }}
+            />
           </div>
         </ResizablePanel>
       </ResizablePanelGroup>
