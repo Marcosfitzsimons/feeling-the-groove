@@ -1,4 +1,4 @@
-import { Rave } from "@/types";
+import { Rave, RavePayload } from "@/types";
 import { db } from "./db"
 
 export const getAllRaves = async () => {
@@ -48,3 +48,14 @@ export const getNearestPastRave = async () => {
     
     return nearestPastDate;
 };
+
+export const createRave = async (payload: RavePayload) => {
+  const newRave = await db.rave.create({
+    data: { ...payload },
+    include: {
+      author: true
+    }
+  })
+
+  return newRave
+}
