@@ -24,14 +24,6 @@ export type Rave = {
   date: Date
 }
 
-type ConnectId = {
-  id: string
-}
-
-type connect = {
-  connect: connectId
-}
-
 type AuthorConnect = { id: string };
 
 export type RavePayload = {
