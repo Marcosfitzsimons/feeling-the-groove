@@ -1,6 +1,6 @@
 const Footer = () => {
   return (
-    <footer className="fixed right-2 bottom-2 text-xs text-muted-foreground transition-colors hover:text-white">
+    <footer className="fixed right-2 bottom-2 text-xs text-muted-foreground transition-colors hover:text-black dark:hover:text-white">
       Made w. 🤍 by Marcos Fitzsimons
     </footer>
   );
