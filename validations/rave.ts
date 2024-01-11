@@ -1,42 +1,23 @@
 import * as z from "zod"
 
-export const ravePatchSchema = z.object({
-  name: z.string().min(1),
-  candy: z.string().optional(),
-  anecdotes: z.string().optional(),
-  quantity: z.number().optional().superRefine((value, ctx) => {
-    if (value !== undefined && value <= 0) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "Quantity must be greater than 0",
-      });
-    }
-    return value;
-  }),
-  ayn: z.number().int(),
-  genre: z.string().min(1),
-  location: z.string().min(1),
-  rank: z.number().int(),
-  date: z.date()
-})
-
-
 export const ravePostSchema = z.object({
-  name: z.string().min(1),
+  name: z.string().min(2, {
+    message: "Name must be at least 2 characters.",
+  }),
   candy: z.string().optional(),
   anecdotes: z.string().optional(),
-  quantity: z.number().optional().superRefine((value, ctx) => {
-    if (value !== undefined && value <= 0) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "Quantity must be greater than 0",
-      });
-    }
-    return value;
+  quantity: z.coerce.number().optional(),
+  ayn: z.coerce.number().lte(1000, 'Ayn cannot be greater than 1000.'),
+  genre: z.string().min(2, {
+    message: "Genre must be at least 2 characters.",
   }),
-  ayn: z.number().int(),
-  genre: z.string().min(1),
-  location: z.string().min(1),
-  rank: z.number().int(),
-  date: z.date()
+  djs: z.string().min(2, {
+    message: "Djs must be at least 2 characters.",
+  }),
+  location: z.string().min(2, {
+    message: "Location must be at least 2 characters.",
+  }),
+  date: z.date({
+    required_error: "Date of rave is required.",
+  })
 })
