@@ -34,7 +34,7 @@ import { Textarea } from "./ui/textarea";
 import StarRatingForm from "./star-rating-input";
 import { User } from "next-auth";
 import { createRaveAction } from "@/app/actions/actions";
-import { RavePayload } from "@/types";
+import { useRouter } from "next/navigation";
 
 type FormData = z.infer<typeof ravePostSchema>;
 
@@ -45,7 +45,10 @@ interface NewRaveFormProps {
 
 const NewRaveForm = ({ nearestPastDate, user }: NewRaveFormProps) => {
   const [isCandy, setIsCandy] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [rating, setRating] = useState(3);
+
+  const router = useRouter();
 
   const form = useForm<FormData>({
     resolver: zodResolver(ravePostSchema),
@@ -63,6 +66,8 @@ const NewRaveForm = ({ nearestPastDate, user }: NewRaveFormProps) => {
   });
 
   async function onSubmit(data: FormData) {
+    setIsSubmitted(true);
+
     const { candy, quantity, anecdotes, ...dataWithoutOptionalFields } = data;
 
     const payload = {
@@ -76,15 +81,13 @@ const NewRaveForm = ({ nearestPastDate, user }: NewRaveFormProps) => {
 
     try {
       await createRaveAction(payload);
+      router.push("/raves");
+      return toast.success(`Rave "${data.name}" created successfully.`);
     } catch (err) {
       console.log(err);
+      setIsSubmitted(false);
       return toast.error("Something went wrong.");
     }
-
-    // redirect to /raves
-    // router.refresh();
-
-    return toast.success(`Rave "${data.name}" created successfully.`);
   }
 
   const calculateAyn = (dateSelected: Date, nearestPastDate: Date | null) => {
@@ -99,39 +102,45 @@ const NewRaveForm = ({ nearestPastDate, user }: NewRaveFormProps) => {
     return null;
   };
 
-  let dateSelected: Date;
+  let dateSelected = form.getValues("date");
 
   const handleDateSelect = (date: Date | undefined) => {
     // Update the form value when the date is selected
     form.setValue("date", date as Date);
-    console.log(!!form.getValues("candy"));
     // Calculate Ayn based on the selected date
     dateSelected = form.getValues("date");
     calculateAyn(dateSelected, nearestPastDate);
   };
-  console.log(form.formState.errors);
+
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="w-full flex flex-col gap-2 max-w-4xl"
-      >
-        <div className="flex gap-2">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full max-w-5xl">
+        <div className="flex gap-4">
           <div className="basis-1/2">
             <div className="flex gap-2 mt-1">
               <FormField
                 control={form.control}
                 name="date"
                 render={({ field }) => (
-                  <FormItem className="flex flex-col">
-                    <FormLabel>Date of rave</FormLabel>
+                  <FormItem className="flex flex-col basis-1/2">
+                    <FormLabel
+                      className={`${
+                        dateSelected &&
+                        nearestPastDate &&
+                        nearestPastDate < dateSelected
+                          ? "h-[24px]"
+                          : ""
+                      } flex items-center`}
+                    >
+                      Date of rave
+                    </FormLabel>
                     <Popover>
                       <PopoverTrigger asChild>
                         <FormControl>
                           <Button
                             variant={"outline"}
                             className={cn(
-                              "w-[240px] pl-3 text-left font-normal",
+                              "pl-3 text-left font-normal",
                               !field.value && "text-muted-foreground"
                             )}
                           >
@@ -164,7 +173,7 @@ const NewRaveForm = ({ nearestPastDate, user }: NewRaveFormProps) => {
                 control={form.control}
                 name="ayn"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="basis-1/2">
                     <FormLabel className="flex items-center gap-1">
                       Ayn
                       {dateSelected &&
@@ -188,7 +197,7 @@ const NewRaveForm = ({ nearestPastDate, user }: NewRaveFormProps) => {
                       )}
                     </FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input {...field} disabled={!nearestPastDate} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -251,23 +260,6 @@ const NewRaveForm = ({ nearestPastDate, user }: NewRaveFormProps) => {
             />
           </div>
           <div className="flex flex-col gap-2 basis-1/2">
-            <FormField
-              control={form.control}
-              name="anecdotes"
-              render={({ field }) => (
-                <FormItem className="space-y-0.5">
-                  <FormLabel>Anecdotes</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder="The night we met ARIELO"
-                      className="resize-none"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
             <div className="flex items-center space-x-2">
               <Switch
                 id="airplane-mode"
@@ -316,11 +308,39 @@ const NewRaveForm = ({ nearestPastDate, user }: NewRaveFormProps) => {
               <Label>Rank</Label>
               <StarRatingForm rating={rating} setRating={setRating} />
             </div>
+
+            <FormField
+              control={form.control}
+              name="anecdotes"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Anecdotes</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="The night we met ARIELO"
+                      className="resize-none"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <Button
+              type="submit"
+              className="self-end mt-auto"
+              disabled={isSubmitted}
+            >
+              {isSubmitted ? (
+                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+              ) : (
+                <Icons.party className="mr-2 h-4 w-4" />
+              )}{" "}
+              {isSubmitted ? "Creating..." : "Create"}
+            </Button>
           </div>
         </div>
-        <Button type="submit" className="self-end">
-          Create
-        </Button>
       </form>
     </Form>
   );

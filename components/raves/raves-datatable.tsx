@@ -42,6 +42,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "../ui/tooltip";
+import { deleteRaveAction } from "@/app/actions/actions";
+import { toast } from "sonner";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -57,6 +59,17 @@ export function RavesDatatable<TData, TValue>({
     []
   );
 
+  const handleDeleteRave = async (id: string) => {
+    try {
+      await deleteRaveAction(id);
+
+      toast.success("Rave deleted successfully");
+    } catch (err) {
+      console.log(err);
+      toast.error("Error when deleting rave");
+    }
+  };
+
   const actionColumn: ColumnDef<TData, TValue>[] = [
     {
       id: "actions",
@@ -68,8 +81,10 @@ export function RavesDatatable<TData, TValue>({
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Button size="icon" variant="ghost">
-                    <Icons.eye className="w-4 aspect-square" />
+                  <Button size="icon" variant="ghost" asChild>
+                    <Link href={`raves/${rave.id}`}>
+                      <Icons.eye className="w-4 aspect-square" />
+                    </Link>
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent className="py-0">
@@ -79,12 +94,10 @@ export function RavesDatatable<TData, TValue>({
 
               <AlertDialog>
                 <div className="relative flex items-center">
-                  <AlertDialogTrigger asChild>
+                  <AlertDialogTrigger className="h-10 w-10 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground">
                     <Tooltip>
                       <TooltipTrigger asChild>
-                        <Button variant="ghost" size="icon">
-                          <Icons.trash className="w-4 aspect-square text-red-700" />
-                        </Button>
+                        <Icons.trash className="w-4 aspect-square text-red-700" />
                       </TooltipTrigger>
                       <TooltipContent className="py-0">
                         <p>Delete</p>
@@ -105,9 +118,7 @@ export function RavesDatatable<TData, TValue>({
                       No, go back to the list
                     </AlertDialogCancel>
                     <AlertDialogAction
-                      onClick={() => {
-                        console.log(rave.id);
-                      }}
+                      onClick={() => handleDeleteRave(rave.id)}
                       className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                     >
                       Yes, delete rave
@@ -139,7 +150,7 @@ export function RavesDatatable<TData, TValue>({
 
   return (
     <>
-      <div className=" flex items-center justify-between py-2 mx-2">
+      <div className=" flex items-center justify-between py-2">
         <Input
           placeholder="Filter by dj name..."
           value={(table.getColumn("djs")?.getFilterValue() as string) ?? ""}
@@ -152,7 +163,7 @@ export function RavesDatatable<TData, TValue>({
           <Link href="/raves/new-rave">Add new rave here</Link>
         </Button>
       </div>
-      <div className="rounded-md border mx-2">
+      <div className="rounded-md border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -202,7 +213,7 @@ export function RavesDatatable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-2 mx-2">
+      <div className="flex items-center justify-end space-x-2 py-2">
         <Button
           variant="outline"
           size="sm"

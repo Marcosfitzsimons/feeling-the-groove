@@ -5,35 +5,35 @@ import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
-} from "../ui/resizable";
-import { Separator } from "../ui/separator";
+} from "./ui/resizable";
+import { Separator } from "./ui/separator";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { User } from "next-auth";
-import UserAccount from "../user-account";
-import SideBarItems from "../side-bar-items";
-import { Nav } from "../nav";
-import { Icons } from "../icons";
-import { RavesDatatable } from "./raves-datatable";
-import { columns } from "./columns";
+import UserAccount from "./user-account";
+import SideBarItems from "./side-bar-items";
+import { Nav } from "./nav";
+import { Icons } from "./icons";
+import SingleRave from "./single-rave";
 import { Rave } from "@/types";
 
-interface RavesResizableContainerProps {
+interface SingleRaveResizableContainerProps {
   defaultLayout: number[] | undefined;
   defaultCollapsed?: boolean;
   navCollapsedSize: number;
-  user: Pick<User, "name" | "image" | "email">;
-  raves: Rave[];
+  user: Pick<User, "name" | "image" | "email" | "id">;
+  rave: Rave;
 }
 
-const RavesResizableContainer = ({
+const SingleRaveResizableContainer = ({
   user,
   defaultLayout = [265, 440, 655],
   defaultCollapsed = false,
   navCollapsedSize,
-  raves,
-}: RavesResizableContainerProps) => {
+  rave,
+}: SingleRaveResizableContainerProps) => {
   const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed);
+
   return (
     <TooltipProvider delayDuration={0}>
       <ResizablePanelGroup
@@ -105,7 +105,7 @@ const RavesResizableContainer = ({
         <ResizableHandle withHandle />
         <ResizablePanel defaultSize={defaultLayout[1]} minSize={30}>
           <div className="h-screen mx-4">
-            <RavesDatatable data={raves} columns={columns} />
+            <SingleRave rave={rave} />
           </div>
         </ResizablePanel>
       </ResizablePanelGroup>
@@ -113,4 +113,4 @@ const RavesResizableContainer = ({
   );
 };
 
-export default RavesResizableContainer;
+export default SingleRaveResizableContainer;

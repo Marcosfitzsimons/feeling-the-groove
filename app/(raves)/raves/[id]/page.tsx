@@ -1,18 +1,23 @@
-import NewRaveResizableContainer from "@/components/new-rave-resizable-container";
-import { authOptions } from "@/lib/auth";
-import { getNearestPastRave } from "@/lib/raves";
-import { getCurrentUser } from "@/lib/session";
-import { isValidJSONString } from "@/lib/utils";
-import { cookies } from "next/headers";
+import { Metadata } from "next";
 import { redirect } from "next/navigation";
+import { authOptions } from "@/lib/auth";
+import { getCurrentUser } from "@/lib/session";
+import { cookies } from "next/headers";
+import { isValidJSONString } from "@/lib/utils";
+import SingleRaveResizableContainer from "@/components/single-rave-resizable-container";
+import { getRave } from "@/lib/raves";
 
-export const metadata = {
-  title: "New Rave",
-  description: "Create a new rave",
+export const metadata: Metadata = {
+  title: "Single rave",
 };
 
-const NewRavePage = async () => {
+export default async function SingleRavePage({
+  params,
+}: {
+  params: { id: string };
+}) {
   const user = await getCurrentUser();
+  const rave = await getRave(params.id);
 
   if (!user) {
     redirect(authOptions?.pages?.signIn || "/login");
@@ -30,12 +35,19 @@ const NewRavePage = async () => {
       ? JSON.parse(collapsed.value)
       : undefined;
 
-  const nearestPastDate = await getNearestPastRave();
+  if (rave === null) {
+    // Handle the case where data is null, such as showing an error message
+    return (
+      <div className="flex justify-center items-center mt-16">
+        Rave not found
+      </div>
+    );
+  }
 
   return (
     <div>
       <div className="hidden md:flex">
-        <NewRaveResizableContainer
+        <SingleRaveResizableContainer
           user={{
             id: user.id,
             name: user.name || null,
@@ -45,11 +57,9 @@ const NewRavePage = async () => {
           defaultLayout={defaultLayout}
           defaultCollapsed={defaultCollapsed}
           navCollapsedSize={4}
-          nearestPastDate={nearestPastDate}
+          rave={rave}
         />
       </div>
     </div>
   );
-};
-
-export default NewRavePage;
+}

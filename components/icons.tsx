@@ -28,6 +28,7 @@ import {
   CalendarDays,
   Eye,
   Trash2,
+  CalendarPlus,
 } from "lucide-react";
 
 export const Icons = {
@@ -50,6 +51,7 @@ export const Icons = {
   warning: AlertTriangle,
   sun: Sun,
   user: User,
+  calendarPlus: CalendarPlus,
   arrowRight: ArrowRight,
   magic: Sparkles,
   pizza: Pizza,

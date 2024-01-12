@@ -43,7 +43,7 @@ export default async function RavePage() {
           raves={raves}
         />
       </div>
-      <div className="h-screen md:hidden">
+      <div className="h-screen mx-2 md:hidden">
         <RavesDatatable data={raves} columns={columns} />
       </div>
     </div>

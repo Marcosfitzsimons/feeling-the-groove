@@ -16,7 +16,7 @@ import { Nav } from "./nav";
 import { Icons } from "./icons";
 import NewRaveForm from "./new-rave-form";
 
-interface NewRaveContainerProps {
+interface NewRaveResizableContainerProps {
   defaultLayout: number[] | undefined;
   defaultCollapsed?: boolean;
   navCollapsedSize: number;
@@ -24,13 +24,13 @@ interface NewRaveContainerProps {
   nearestPastDate: Date | null;
 }
 
-const NewRaveContainer = ({
+const NewRaveResizableContainer = ({
   user,
   defaultLayout = [265, 440, 655],
   defaultCollapsed = false,
   navCollapsedSize,
   nearestPastDate,
-}: NewRaveContainerProps) => {
+}: NewRaveResizableContainerProps) => {
   const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed);
 
   return (
@@ -93,7 +93,7 @@ const NewRaveContainer = ({
               },
               {
                 title: "New Rave",
-                icon: Icons.add,
+                icon: Icons.calendarPlus,
                 link: "/raves/new-rave",
               },
             ]}
@@ -103,7 +103,8 @@ const NewRaveContainer = ({
         </ResizablePanel>
         <ResizableHandle withHandle />
         <ResizablePanel defaultSize={defaultLayout[1]} minSize={30}>
-          <div className="h-screen flex items-center justify-center">
+          <div className="h-screen mx-4">
+            <h2 className="text-3xl font-semibold mb-4">Create New Rave</h2>
             <NewRaveForm
               nearestPastDate={nearestPastDate}
               user={{ id: user.id }}
@@ -115,4 +116,4 @@ const NewRaveContainer = ({
   );
 };
 
-export default NewRaveContainer;
+export default NewRaveResizableContainer;

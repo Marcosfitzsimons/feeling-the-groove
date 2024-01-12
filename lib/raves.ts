@@ -2,32 +2,33 @@ import { Rave, RavePayload } from "@/types";
 import { db } from "./db"
 
 export const getAllRaves = async () => {
-    const data = await db.rave.findMany() 
+      const data = await db.rave.findMany() 
 
-    const formattedData = data.map((item: Rave) => ({
-        ...item,
-        quantity: item?.quantity?.toNumber(), // Convert 'quantity' Decimal to a number
-        // Convert other Decimal values similarly if needed
-      }));
-    
-      return formattedData; // 
+      const formattedData = data.map((item: Rave) => ({
+          ...item,
+          quantity: item?.quantity?.toNumber(), // Convert 'quantity' Decimal to a number
+        }));
+      
+      return formattedData;
 }
 
 export const getRave = async (id: string) => {
     const data = await db.rave.findUnique({
-        where: {
-          id: id,
-        },
-    });
-    const formattedData = {
-        ...data,
-        quantity: data?.quantity?.toNumber()
-    }
-    return formattedData
+          where: {
+            id: id,
+          },
+      });
+      const formattedData = {
+          ...data,
+          quantity: data?.quantity?.toNumber()
+      }
+      
+      return formattedData as Rave
 }
 
 export const getNearestPastRave = async () => {
     const currentDate = new Date(); 
+
     const data = await db.rave.findMany({
       orderBy: {
         date: 'desc', // Order by date in descending order
@@ -50,12 +51,29 @@ export const getNearestPastRave = async () => {
 };
 
 export const createRave = async (payload: RavePayload) => {
-  const newRave = await db.rave.create({
-    data: { ...payload },
-    include: {
-      author: true
-    }
-  })
+     await db.rave.create({
+      data: { ...payload },
+      include: {
+        author: true
+      }
+    })
+}
 
-  return newRave
+export const updateRave = async (id: string, payload: RavePayload) => {
+    await db.rave.update({
+      where: { id },
+      data: { ...payload },
+      include: {
+        author: true
+      }
+    })
+}
+
+
+export const deleteRave = async (id: string) => {
+    await db.rave.delete({
+      where: {
+        id: id
+      },
+    })
 }
