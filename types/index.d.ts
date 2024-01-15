@@ -40,6 +40,19 @@ export type RavePayload = {
   author: { connect: AuthorConnect };
 }
 
+export type UpdateRavePayload = {
+  name: string
+  ayn: number
+  genre: string
+  location: string
+  rank: number
+  candy?: string | null
+  quantity?: Decimal | null
+  anecdotes?: string | null
+  djs: string
+  date: string,
+}
+
 export type NavItem = {
   title: string
   link: string
