@@ -11,23 +11,14 @@ interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const [isGitHubLoading, setIsGitHubLoading] = React.useState<boolean>(false);
+  const [isGoogleLoading, setIsGoogleLoading] = React.useState<boolean>(false);
 
   // to do: add google auth
   // -> when I tried I got error:
   // invalid_client (the OAuth client was not found)
 
   return (
-    <div className={cn("grid gap-6", className)} {...props}>
-      <div className="relative">
-        <div className="absolute inset-0 flex items-center">
-          <span className="w-full border-t" />
-        </div>
-        <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-background px-2 text-muted-foreground">
-            Login with your GitHub account
-          </span>
-        </div>
-      </div>
+    <div className={cn("grid gap-4", className)} {...props}>
       <button
         type="button"
         className={cn(buttonVariants({ variant: "outline" }))}
@@ -35,7 +26,7 @@ function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           setIsGitHubLoading(true);
           signIn("github");
         }}
-        disabled={isGitHubLoading}
+        disabled={isGoogleLoading || isGitHubLoading}
       >
         {isGitHubLoading ? (
           <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
@@ -43,6 +34,33 @@ function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           <Icons.gitHub className="mr-2 h-4 w-4" />
         )}{" "}
         Github
+      </button>
+
+      <div className="relative">
+        <div className="absolute inset-0 flex items-center">
+          <span className="w-full border-t" />
+        </div>
+        <div className="relative flex justify-center text-xs uppercase">
+          <span className="px-2 text-muted-foreground bg-background">
+            Or continue with
+          </span>
+        </div>
+      </div>
+      <button
+        type="button"
+        className={cn(buttonVariants({ variant: "outline" }))}
+        onClick={() => {
+          setIsGoogleLoading(true);
+          signIn("google");
+        }}
+        disabled={isGoogleLoading || isGitHubLoading}
+      >
+        {isGoogleLoading ? (
+          <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+        ) : (
+          <Icons.google className="mr-2 h-[14px] w-[14px]" />
+        )}{" "}
+        Google
       </button>
     </div>
   );

@@ -9,13 +9,18 @@ export const metadata: Metadata = {
 
 const LoginPage = () => {
   return (
-    <section className="container flex h-screen flex-col items-center justify-center">
-      <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px] mb-40">
+    <section className="flex h-screen flex-col items-center justify-center">
+      <div className="px-2 mx-auto flex w-full max-w-[400px] flex-col justify-center gap-4 mb-52 ">
         <div className="flex flex-col space-y-2 text-center">
           <Logo />
-          <h1 className="text-2xl font-semibold tracking-tight">
+          <h2 className="text-2xl font-semibold tracking-tight">
             Welcome back
-          </h1>
+          </h2>
+          <p className="text-muted-foreground text-sm">
+            Your rave journey continues! Sign in to manage, store, and relive
+            your past raves. Your unique collection of memories is just a login
+            away.
+          </p>
         </div>
         <UserAuthForm />
       </div>
