@@ -150,7 +150,7 @@ export function RavesDatatable<TData, TValue>({
 
   return (
     <>
-      <div className=" flex items-center justify-between py-2">
+      <div className="flex flex-col gap-2 items-center py-2 md:flex-row md:justify-between">
         <Input
           placeholder="Filter by dj name..."
           value={(table.getColumn("djs")?.getFilterValue() as string) ?? ""}
@@ -160,7 +160,10 @@ export function RavesDatatable<TData, TValue>({
           className="max-w-sm"
         />
         <Button size="sm" className="self-end" asChild>
-          <Link href="/raves/new-rave">Add new rave here</Link>
+          <Link href="/raves/new-rave">
+            <Icons.calendarPlus className="w-4 h-4 mr-2" />
+            Add new rave
+          </Link>
         </Button>
       </div>
       <div className="rounded-md border">
