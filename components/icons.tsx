@@ -29,6 +29,7 @@ import {
   Eye,
   Trash2,
   CalendarPlus,
+  PencilLine,
 } from "lucide-react";
 
 export const Icons = {
@@ -37,6 +38,7 @@ export const Icons = {
   calendar: CalendarDays,
   spinner: Loader2,
   eye: Eye,
+  edit: PencilLine,
   chevronLeft: ChevronLeft,
   chevronRight: ChevronRight,
   arrowUpDown: ArrowUpDown,
