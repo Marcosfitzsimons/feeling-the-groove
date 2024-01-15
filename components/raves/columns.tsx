@@ -118,7 +118,7 @@ export const columns: ColumnDef<Rave>[] = [
   },
   {
     accessorKey: "anecdotes",
-    header: "Anecdotes",
+    header: "Memories",
     cell: ({ row }) => {
       const anecdote: String = row.getValue("anecdotes");
       return (
