@@ -1,4 +1,4 @@
-import { Rave, RavePayload } from "@/types";
+import { Rave, RavePayload, UpdateRavePayload } from "@/types";
 import { db } from "./db"
 
 export const getAllRaves = async () => {
@@ -59,13 +59,10 @@ export const createRave = async (payload: RavePayload) => {
     })
 }
 
-export const updateRave = async (id: string, payload: RavePayload) => {
+export const updateRave = async (id: string, payload: UpdateRavePayload) => {
     await db.rave.update({
       where: { id },
       data: { ...payload },
-      include: {
-        author: true
-      }
     })
 }
 
