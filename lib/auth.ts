@@ -18,6 +18,10 @@ export const authOptions: NextAuthOptions = {
     signIn: "/login",
   },
   providers: [
+    GoogleProvider({
+      clientId: env.GOOGLE_CLIENT_ID,
+      clientSecret: env.GOOGLE_CLIENT_SECRET,
+    }),
     GitHubProvider({
       clientId: env.GITHUB_CLIENT_ID,
       clientSecret: env.GITHUB_CLIENT_SECRET,
@@ -34,6 +38,7 @@ export const authOptions: NextAuthOptions = {
 
       return session
     },
+    async redirect({ url, baseUrl }) { return baseUrl },
     async jwt({ token, user }) {
       const dbUser = await db.user.findFirst({
         where: {
