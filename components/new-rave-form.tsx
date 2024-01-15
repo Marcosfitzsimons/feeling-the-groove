@@ -114,7 +114,7 @@ const NewRaveForm = ({ nearestPastDate, user }: NewRaveFormProps) => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full max-w-5xl">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full max-w-4xl">
         <div className="flex gap-4">
           <div className="basis-1/2">
             <div className="flex gap-2 mt-1">
@@ -197,7 +197,7 @@ const NewRaveForm = ({ nearestPastDate, user }: NewRaveFormProps) => {
                       )}
                     </FormLabel>
                     <FormControl>
-                      <Input {...field} disabled={!nearestPastDate} />
+                      <Input {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
