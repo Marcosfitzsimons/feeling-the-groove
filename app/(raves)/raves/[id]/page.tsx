@@ -6,6 +6,7 @@ import { cookies } from "next/headers";
 import { isValidJSONString } from "@/lib/utils";
 import SingleRaveResizableContainer from "@/components/single-rave-resizable-container";
 import { getRave } from "@/lib/raves";
+import SingleRave from "@/components/single-rave";
 
 export const metadata: Metadata = {
   title: "Single rave",
@@ -59,6 +60,9 @@ export default async function SingleRavePage({
           navCollapsedSize={4}
           rave={rave}
         />
+      </div>
+      <div className="h-screen mx-2 my-2 md:hidden">
+        <SingleRave rave={rave} />
       </div>
     </div>
   );

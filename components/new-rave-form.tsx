@@ -115,9 +115,9 @@ const NewRaveForm = ({ nearestPastDate, user }: NewRaveFormProps) => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-full max-w-4xl">
-        <div className="flex gap-4">
-          <div className="basis-1/2">
-            <div className="flex gap-2 mt-1">
+        <div className="flex flex-col gap-2 md:flex-row md:gap-4">
+          <div className="flex flex-col gap-2 md:basis-1/2">
+            <div className="flex flex-col gap-2 md:flex md:gap-2 md:mt-1">
               <FormField
                 control={form.control}
                 name="date"
@@ -259,7 +259,7 @@ const NewRaveForm = ({ nearestPastDate, user }: NewRaveFormProps) => {
               )}
             />
           </div>
-          <div className="flex flex-col gap-2 basis-1/2">
+          <div className="flex flex-col gap-2 md:basis-1/2">
             <div className="flex items-center space-x-2">
               <Switch
                 id="airplane-mode"

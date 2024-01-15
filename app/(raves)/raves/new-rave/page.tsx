@@ -1,3 +1,4 @@
+import NewRaveForm from "@/components/new-rave-form";
 import NewRaveResizableContainer from "@/components/new-rave-resizable-container";
 import { authOptions } from "@/lib/auth";
 import { getNearestPastRave } from "@/lib/raves";
@@ -47,6 +48,10 @@ const NewRavePage = async () => {
           navCollapsedSize={4}
           nearestPastDate={nearestPastDate}
         />
+      </div>
+      <div className="h-screen mx-2 mt-4 md:hidden">
+        <h2 className="text-3xl font-semibold mb-4">Create New Rave</h2>
+        <NewRaveForm nearestPastDate={nearestPastDate} user={{ id: user.id }} />
       </div>
     </div>
   );
