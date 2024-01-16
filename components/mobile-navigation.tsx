@@ -44,7 +44,7 @@ export function MobileNavigation({ user }: MobileNavigationProps) {
             <span className="sr-only">AI predictions</span>
           </Button>
         </SheetTrigger>
-        <SheetContent side="left" className="bg-background flex flex-col gap-2">
+        <SheetContent side="left" className="bg-[#000] flex flex-col gap-2">
           <SheetHeader className="my-2">
             <SheetTitle className="flex h-[52px] items-center justify-center text-start">
               <Logo />
