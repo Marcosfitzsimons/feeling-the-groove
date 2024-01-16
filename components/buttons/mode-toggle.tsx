@@ -13,7 +13,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { cn } from "@/lib/utils";
-import { Separator } from "../ui/separator";
 
 interface ModeToggleProps {
   isCollapsed: boolean;

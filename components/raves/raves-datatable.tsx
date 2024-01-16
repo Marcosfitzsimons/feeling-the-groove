@@ -44,6 +44,15 @@ import {
 } from "../ui/tooltip";
 import { deleteRaveAction } from "@/app/actions/actions";
 import { toast } from "sonner";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
+import { SlidersHorizontal } from "lucide-react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -150,21 +159,56 @@ export function RavesDatatable<TData, TValue>({
 
   return (
     <>
-      <div className="flex flex-col gap-2 items-center py-2 md:flex-row md:justify-between">
+      <div className="flex flex-col gap-2 items-center py-2 md:flex-row md:justify-between md:items-end">
         <Input
           placeholder="Filter by dj name..."
           value={(table.getColumn("djs")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("djs")?.setFilterValue(event.target.value)
           }
-          className="max-w-sm"
+          className="max-w-sm h-8"
         />
-        <Button size="sm" className="self-end" asChild>
-          <Link href="/raves/new-rave">
-            <Icons.calendarPlus className="w-4 h-4 mr-2" />
-            Add new rave
-          </Link>
-        </Button>
+        <div className="w-full flex justify-between gap-2">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="sm">
+                <SlidersHorizontal className="mr-2 h-3.5 w-3.5" />
+                View
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-[150px]">
+              <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              {table
+                .getAllColumns()
+                .filter(
+                  (column) =>
+                    typeof column.accessorFn !== "undefined" &&
+                    column.getCanHide()
+                )
+                .map((column) => {
+                  return (
+                    <DropdownMenuCheckboxItem
+                      key={column.id}
+                      className="capitalize"
+                      checked={column.getIsVisible()}
+                      onCheckedChange={(value) =>
+                        column.toggleVisibility(!!value)
+                      }
+                    >
+                      {column.id}
+                    </DropdownMenuCheckboxItem>
+                  );
+                })}
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <Button size="sm" asChild>
+            <Link href="/raves/new-rave">
+              <Icons.calendarPlus className="w-4 h-4 mr-2" />
+              Add new rave
+            </Link>
+          </Button>
+        </div>
       </div>
       <div className="rounded-md border">
         <Table>
@@ -222,7 +266,7 @@ export function RavesDatatable<TData, TValue>({
           size="sm"
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
-          className="text-xs"
+          className="text-xs h-7"
         >
           <Icons.chevronLeft className="w-3 aspect-square mr-1" />
           Previous
@@ -232,7 +276,7 @@ export function RavesDatatable<TData, TValue>({
           size="sm"
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
-          className="text-xs"
+          className="text-xs h-7"
         >
           Next
           <Icons.chevronRight className="w-3 aspect-square ml-1" />

@@ -27,11 +27,6 @@ interface MobileNavigationProps {
 export function MobileNavigation({ user }: MobileNavigationProps) {
   const pathname = usePathname();
 
-  // to do:
-  // Display user info from Header (RSC)
-  // Doesn't works
-  // Get error when I tried to get user info
-
   return (
     <div className="w-9 grid grid-cols-2 gap-2 md:hidden">
       <Sheet>

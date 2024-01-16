@@ -1,3 +1,4 @@
+import { Icons } from "@/components/icons";
 import Logo from "@/components/logo";
 import UserAuthForm from "@/components/user-auth-form";
 import { Metadata } from "next";
@@ -12,7 +13,7 @@ const LoginPage = () => {
     <section className="flex h-screen flex-col items-center justify-center">
       <div className="px-2 mx-auto flex w-full max-w-[400px] flex-col justify-center gap-4 mb-52 ">
         <div className="flex flex-col space-y-2 text-center">
-          <Logo />
+          <Icons.logo className="mx-auto h-7 w-7" />
           <h2 className="text-2xl font-semibold tracking-tight">
             Welcome back
           </h2>

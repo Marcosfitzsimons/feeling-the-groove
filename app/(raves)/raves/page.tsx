@@ -10,11 +10,12 @@ import { getAllRaves } from "@/lib/raves";
 
 export default async function RavePage() {
   const user = await getCurrentUser();
-  const raves = await getAllRaves();
 
   if (!user) {
     redirect(authOptions?.pages?.signIn || "/login");
   }
+
+  const raves = await getAllRaves(user.id);
 
   const layout = cookies().get("react-resizable-panels:layout");
   const collapsed = cookies().get("react-resizable-panels:collapsed");

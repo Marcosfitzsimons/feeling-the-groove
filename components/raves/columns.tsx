@@ -109,31 +109,12 @@ export const columns: ColumnDef<Rave>[] = [
     header: "Location",
   },
   {
-    accessorKey: "candy",
-    header: "Candy",
-  },
-  {
-    accessorKey: "quantity",
-    header: "Quantity",
-  },
-  {
-    accessorKey: "anecdotes",
-    header: "Memories",
-    cell: ({ row }) => {
-      const anecdote: String = row.getValue("anecdotes");
-      return (
-        <ScrollArea className="h-[60px] w-[300px] rounded-md border px-4 py-1">
-          {anecdote}
-        </ScrollArea>
-      );
-    },
-  },
-  {
     accessorKey: "rank",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
+          className="mx-auto"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Rank

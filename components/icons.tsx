@@ -30,6 +30,7 @@ import {
   Trash2,
   CalendarPlus,
   PencilLine,
+  SlidersHorizontal,
 } from "lucide-react";
 
 export const Icons = {
@@ -61,6 +62,7 @@ export const Icons = {
   laptop: Laptop,
   star: Star,
   info: Info,
+  slidersHorizontal: SlidersHorizontal,
   gitHub: ({ ...props }: LucideProps) => (
     <svg
       aria-hidden="true"

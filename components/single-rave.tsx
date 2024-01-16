@@ -26,16 +26,16 @@ const SingleRave = ({ rave }: SingleRaveProps) => {
           <div className="self-start">
             {rave.rank > 3 ? (
               <div className="flex items-center gap-3">
-                <StarRating rank={rave.rank} />
+                <StarRating isLarge={true} rank={rave.rank} />
                 <span className="select-none">😎🥳✨🎉🎊</span>
               </div>
             ) : rave.rank === 1 ? (
               <div className="flex items-center gap-3">
-                <StarRating rank={rave.rank} />
+                <StarRating isLarge={true} rank={rave.rank} />
                 <span className="select-none">🤮💩👎🤡❌</span>
               </div>
             ) : (
-              <StarRating rank={rave.rank} />
+              <StarRating isLarge={true} rank={rave.rank} />
             )}
           </div>
         </div>
