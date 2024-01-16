@@ -1,8 +1,12 @@
 import { Rave, RavePayload, UpdateRavePayload } from "@/types";
 import { db } from "./db"
 
-export const getAllRaves = async () => {
-      const data = await db.rave.findMany() 
+export const getAllRaves = async (userId: string) => {
+      const data = await db.rave.findMany({
+        where: {
+         authorId: userId, // Replace 'userId' with the actual field name in your rave model
+        },
+      }) 
 
       const formattedData = data.map((item: Rave) => ({
           ...item,
