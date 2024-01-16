@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Icons } from "./icons";
+import { useTheme } from "next-themes";
 
 interface StarRatingInputProps {
   rating: number;
@@ -9,6 +10,8 @@ interface StarRatingInputProps {
 }
 
 const StarRatingInput = ({ rating, setRating }: StarRatingInputProps) => {
+  const { theme } = useTheme();
+
   const [hover, setHover] = useState(0);
   return (
     <div className="flex items-center gap-1">
@@ -18,7 +21,13 @@ const StarRatingInput = ({ rating, setRating }: StarRatingInputProps) => {
           <Icons.star
             key={index}
             className="w-[18px] h-[18px] cursor-pointer transition-colors"
-            fill={index <= (hover || rating) ? "#fef08a" : "#a1a1aa"}
+            fill={
+              index <= (hover || rating)
+                ? theme === "dark"
+                  ? "#fef08a"
+                  : "#fcd34d"
+                : "#e2e8f0"
+            }
             strokeWidth={0}
             onClick={() => setRating(index)}
             onMouseEnter={() => setHover(index)}
