@@ -3,6 +3,8 @@ import { Rave } from "@/types";
 import { StarRating } from "./ui/star-rating";
 import Image from "next/image";
 import UpdateRave from "./update-rave";
+import { Button } from "./ui/button";
+import { Icons } from "./icons";
 
 interface SingleRaveProps {
   rave: Rave;
@@ -11,9 +13,9 @@ interface SingleRaveProps {
 const SingleRave = ({ rave }: SingleRaveProps) => {
   return (
     <div className="">
-      <div className="w-full md:max-w-lg flex flex-col gap-8">
+      <div className="w-full flex flex-col gap-8 md:max-w-lg">
         <div className="flex flex-col gap-2">
-          <h2 className="text-4xl font-semibold flex items-center gap-2">
+          <h2 className="text-3xl font-semibold flex items-center gap-2 md:text-4xl">
             <Image
               className=""
               src="/party.png"
@@ -39,7 +41,7 @@ const SingleRave = ({ rave }: SingleRaveProps) => {
             )}
           </div>
         </div>
-        <div className="flex flex-col gap-5">
+        <div className="text-sm flex flex-col gap-5 md:text-base">
           <ul className="flex justify-between">
             <div className="flex flex-col gap-1">
               <li className="flex items-center gap-1">
@@ -84,8 +86,13 @@ const SingleRave = ({ rave }: SingleRaveProps) => {
           </ul>
           {rave.anecdotes && (
             <div className="">
-              <p className="font-semibold">Memories</p>
-
+              <div className="flex items-centar gap-1">
+                <p className="font-semibold">Memories</p>
+                <Button size="sm" variant="outline" className="h-6 text-xs">
+                  <Icons.edit className="w-3.5 h-3.5 mr-2" />
+                  Edit memories
+                </Button>
+              </div>
               <div className="p-2 max-w-md flex flex-col gap-2">
                 <div className="flex items-center gap-1">
                   <Image
@@ -95,7 +102,7 @@ const SingleRave = ({ rave }: SingleRaveProps) => {
                     width={20}
                     height={20}
                   />
-                  <p className="text-muted-foreground text-sm italic">
+                  <p className="text-muted-foreground text-xs italic">
                     Moments to remember...
                   </p>
                 </div>
