@@ -53,6 +53,17 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { SlidersHorizontal } from "lucide-react";
+import { useMediaQuery } from "@/hooks/use-media-query";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "../ui/drawer";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -64,17 +75,21 @@ export function RavesDatatable<TData, TValue>({
   data,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [open, setOpen] = React.useState(false);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
 
+  const isDesktop = useMediaQuery("(min-width: 768px)");
+
   const handleDeleteRave = async (id: string) => {
     try {
       await deleteRaveAction(id);
-
+      setOpen(false);
       toast.success("Rave deleted successfully");
     } catch (err) {
       console.log(err);
+      setOpen(false);
       toast.error("Error when deleting rave");
     }
   };
@@ -100,10 +115,42 @@ export function RavesDatatable<TData, TValue>({
                   <p>See</p>
                 </TooltipContent>
               </Tooltip>
-
-              <AlertDialog>
-                <div className="relative flex items-center">
-                  <AlertDialogTrigger className="h-10 w-10 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground">
+              {isDesktop ? (
+                <AlertDialog>
+                  <div className="relative flex items-center">
+                    <AlertDialogTrigger className="h-10 w-10 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground">
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Icons.trash className="w-4 aspect-square text-red-700" />
+                        </TooltipTrigger>
+                        <TooltipContent className="py-0">
+                          <p>Delete</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </AlertDialogTrigger>
+                  </div>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This action cannot be undone. This will permanently
+                        delete the rave.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel className="">Cancel</AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={() => handleDeleteRave(rave.id)}
+                        className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                      >
+                        Delete rave
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              ) : (
+                <Drawer open={open} onOpenChange={setOpen}>
+                  <DrawerTrigger className="h-10 w-10 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground">
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <Icons.trash className="w-4 aspect-square text-red-700" />
@@ -112,29 +159,30 @@ export function RavesDatatable<TData, TValue>({
                         <p>Delete</p>
                       </TooltipContent>
                     </Tooltip>
-                  </AlertDialogTrigger>
-                </div>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      This action cannot be undone. This will permanently delete
-                      the rave.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel className="">
-                      No, go back to the list
-                    </AlertDialogCancel>
-                    <AlertDialogAction
-                      onClick={() => handleDeleteRave(rave.id)}
-                      className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                    >
-                      Yes, delete rave
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
+                  </DrawerTrigger>
+                  <DrawerContent className="px-2">
+                    <DrawerHeader>
+                      <DrawerTitle>Are you sure?</DrawerTitle>
+                      <DrawerDescription>
+                        This action cannot be undone. This will permanently
+                        delete the rave.
+                      </DrawerDescription>
+                    </DrawerHeader>
+                    <DrawerFooter className="px-0">
+                      <DrawerClose asChild></DrawerClose>
+                      <Button
+                        className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                        onClick={() => handleDeleteRave(rave.id)}
+                      >
+                        Delete rave
+                      </Button>
+                      <DrawerClose asChild>
+                        <Button variant="outline">Cancel</Button>
+                      </DrawerClose>
+                    </DrawerFooter>
+                  </DrawerContent>
+                </Drawer>
+              )}
             </TooltipProvider>
           </div>
         );

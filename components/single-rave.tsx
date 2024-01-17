@@ -45,7 +45,7 @@ const SingleRave = ({ rave }: SingleRaveProps) => {
             <div className="flex flex-col gap-1">
               <li className="flex items-center gap-1">
                 <span className="font-semibold">Date:</span>
-                {correctDateFormat(rave.date)}
+                {rave.date && correctDateFormat(rave.date)}
               </li>
               <li className="flex items-center gap-1">
                 <span className="font-semibold">Location:</span>
@@ -83,7 +83,11 @@ const SingleRave = ({ rave }: SingleRaveProps) => {
               )}
             </div>
           </ul>
-          {rave.memories && <RaveMemories memories={rave.memories} />}
+          {rave.memories ? (
+            <RaveMemories raveId={rave.id} memories={rave.memories} />
+          ) : (
+            ""
+          )}
 
           <UpdateRave rave={rave} />
         </div>

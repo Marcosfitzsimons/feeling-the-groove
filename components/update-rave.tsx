@@ -4,7 +4,7 @@ import { Rave } from "@/types";
 import { Button } from "./ui/button";
 import { Icons } from "./icons";
 
-import { ravePostSchema } from "@/validations/rave";
+import { raveUpdateSchema } from "@/validations/rave";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -26,7 +26,6 @@ import React, { useState } from "react";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogFooter,
   DialogHeader,
@@ -45,11 +44,10 @@ import {
 
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { Textarea } from "./ui/textarea";
 import StarRatingForm from "./star-rating-input";
 import { updateRaveAction } from "@/app/actions/actions";
 
-type FormData = z.infer<typeof ravePostSchema>;
+type FormData = z.infer<typeof raveUpdateSchema>;
 
 interface UpdateRaveProps {
   rave: Rave;
@@ -61,12 +59,15 @@ const UpdateRave = ({ rave }: UpdateRaveProps) => {
   const [isCandy, setIsCandy] = useState(rave.candy ? true : false);
   const [rating, setRating] = useState(rave.rank);
 
-  const adjustedDate = addMinutes(rave.date, rave.date.getTimezoneOffset());
+  const correctDate = (date: Date) => {
+    const adjustedDate = addMinutes(date, date.getTimezoneOffset());
+    return adjustedDate;
+  };
 
   const form = useForm<FormData>({
-    resolver: zodResolver(ravePostSchema),
+    resolver: zodResolver(raveUpdateSchema),
     defaultValues: {
-      date: adjustedDate,
+      date: correctDate(rave.date),
       djs: rave.djs,
       ayn: rave.ayn,
       name: rave.name,
@@ -74,22 +75,20 @@ const UpdateRave = ({ rave }: UpdateRaveProps) => {
       genre: rave.genre,
       candy: rave.candy ? rave.candy : "",
       quantity: rave.quantity ? rave.quantity : 0,
-      anecdotes: rave.anecdotes ? rave.anecdotes : "",
     },
   });
 
   async function onSubmit(data: FormData) {
-    const { candy, quantity, anecdotes, ...dataWithoutOptionalFields } = data;
+    const { candy, quantity, ...dataWithoutOptionalFields } = data;
     const payload = {
       ...(data.candy
         ? { candy: data.candy, quantity: data.quantity }
         : { candy: "", quantity: undefined }),
-      ...(data.anecdotes ? { anecdotes: data.anecdotes } : { anecdotes: "" }),
       ...dataWithoutOptionalFields,
       date: convertToDBDate(data.date),
       rank: rating,
     };
-    console.log(payload);
+
     try {
       await updateRaveAction(rave.id, payload);
       setOpen(false);
@@ -122,65 +121,70 @@ const UpdateRave = ({ rave }: UpdateRaveProps) => {
             >
               <div className="flex gap-2">
                 <div className="flex flex-col gap-2 basis-1/2">
-                  <FormField
-                    control={form.control}
-                    name="date"
-                    render={({ field }) => (
-                      <FormItem className="flex flex-col basis-1/2 z-50">
-                        <FormLabel className="flex items-center">
-                          Date of rave
-                        </FormLabel>
-                        <Popover>
-                          <PopoverTrigger asChild>
-                            <FormControl>
-                              <Button
-                                variant={"outline"}
-                                className={cn(
-                                  "pl-3 text-left font-normal",
-                                  !field.value && "text-muted-foreground"
-                                )}
-                              >
-                                {field.value ? (
-                                  format(field.value, "PPP")
-                                ) : (
-                                  <span>Pick a date</span>
-                                )}
-                                <Icons.calendar className="ml-auto h-4 w-4 opacity-50" />
-                              </Button>
-                            </FormControl>
-                          </PopoverTrigger>
-                          <PopoverContent className="w-auto p-0" align="start">
-                            <Calendar
-                              mode="single"
-                              selected={field.value}
-                              onSelect={field.onChange}
-                              disabled={(date) =>
-                                date > new Date() ||
-                                date < new Date("1900-01-01")
-                              }
-                            />
-                          </PopoverContent>
-                        </Popover>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="ayn"
-                    render={({ field }) => (
-                      <FormItem className="basis-1/2">
-                        <FormLabel className="flex items-center gap-1">
-                          Ayn
-                        </FormLabel>
-                        <FormControl>
-                          <Input {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                  <div className="flex gap-2">
+                    <FormField
+                      control={form.control}
+                      name="date"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-col basis-2/3">
+                          <FormLabel className="flex items-center">
+                            Date of rave
+                          </FormLabel>
+                          <Popover>
+                            <PopoverTrigger asChild>
+                              <FormControl>
+                                <Button
+                                  variant={"outline"}
+                                  className={cn(
+                                    "pl-3 text-left font-normal",
+                                    !field.value && "text-muted-foreground"
+                                  )}
+                                >
+                                  {field.value ? (
+                                    format(field.value, "PPP")
+                                  ) : (
+                                    <span>Pick a date</span>
+                                  )}
+                                  <Icons.calendar className="ml-auto h-4 w-4 opacity-50" />
+                                </Button>
+                              </FormControl>
+                            </PopoverTrigger>
+                            <PopoverContent
+                              className="w-auto p-0"
+                              align="start"
+                            >
+                              <Calendar
+                                mode="single"
+                                selected={field.value}
+                                onSelect={field.onChange}
+                                disabled={(date) =>
+                                  date > new Date() ||
+                                  date < new Date("1900-01-01")
+                                }
+                              />
+                            </PopoverContent>
+                          </Popover>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
+                    <FormField
+                      control={form.control}
+                      name="ayn"
+                      render={({ field }) => (
+                        <FormItem className="basis-1/3">
+                          <FormLabel className="flex items-center gap-1">
+                            Ayn
+                          </FormLabel>
+                          <FormControl>
+                            <Input {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
                   <FormField
                     control={form.control}
                     name="djs"
@@ -224,12 +228,16 @@ const UpdateRave = ({ rave }: UpdateRaveProps) => {
                       </FormItem>
                     )}
                   />
+                </div>
+                <div className="flex flex-col gap-2 basis-1/2">
                   <FormField
                     control={form.control}
                     name="genre"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Genre</FormLabel>
+                        <FormLabel className="flex items-center">
+                          Genre
+                        </FormLabel>
                         <FormControl>
                           <Input placeholder="Progressive" {...field} />
                         </FormControl>
@@ -237,8 +245,6 @@ const UpdateRave = ({ rave }: UpdateRaveProps) => {
                       </FormItem>
                     )}
                   />
-                </div>
-                <div className="flex flex-col gap-2 basis-1/2">
                   <div className="flex items-center space-x-2">
                     <Switch
                       id="airplane-mode"
@@ -283,24 +289,6 @@ const UpdateRave = ({ rave }: UpdateRaveProps) => {
                     <Label>Rank</Label>
                     <StarRatingForm rating={rating} setRating={setRating} />
                   </div>
-
-                  <FormField
-                    control={form.control}
-                    name="anecdotes"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Anecdotes</FormLabel>
-                        <FormControl>
-                          <Textarea
-                            placeholder="The night we met ARIELO"
-                            className="resize-none"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
                 </div>
               </div>
               <DialogFooter className="my-2">
@@ -331,64 +319,65 @@ const UpdateRave = ({ rave }: UpdateRaveProps) => {
             className="w-full max-w-4xl"
           >
             <div className="flex flex-col gap-2">
-              <FormField
-                control={form.control}
-                name="date"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col basis-1/2 z-50">
-                    <FormLabel className="flex items-center">
-                      Date of rave
-                    </FormLabel>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <FormControl>
-                          <Button
-                            variant={"outline"}
-                            className={cn(
-                              "pl-3 text-left font-normal",
-                              !field.value && "text-muted-foreground"
-                            )}
-                          >
-                            {field.value ? (
-                              format(field.value, "PPP")
-                            ) : (
-                              <span>Pick a date</span>
-                            )}
-                            <Icons.calendar className="ml-auto h-4 w-4 opacity-50" />
-                          </Button>
-                        </FormControl>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          mode="single"
-                          selected={field.value}
-                          onSelect={field.onChange}
-                          disabled={(date) =>
-                            date > new Date() || date < new Date("1900-01-01")
-                          }
-                        />
-                      </PopoverContent>
-                    </Popover>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="ayn"
-                render={({ field }) => (
-                  <FormItem className="basis-1/2">
-                    <FormLabel className="flex items-center gap-1">
-                      Ayn
-                    </FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
+              <div className="flex gap-2">
+                <FormField
+                  control={form.control}
+                  name="date"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col basis-2/3 z-50">
+                      <FormLabel className="flex items-center">
+                        Date of rave
+                      </FormLabel>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <FormControl>
+                            <Button
+                              variant={"outline"}
+                              className={cn(
+                                "pl-3 text-left font-normal",
+                                !field.value && "text-muted-foreground"
+                              )}
+                            >
+                              {field.value ? (
+                                format(field.value, "PPP")
+                              ) : (
+                                <span>Pick a date</span>
+                              )}
+                              <Icons.calendar className="ml-auto h-4 w-4 opacity-50" />
+                            </Button>
+                          </FormControl>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0" align="start">
+                          <Calendar
+                            mode="single"
+                            selected={field.value}
+                            onSelect={field.onChange}
+                            disabled={(date) =>
+                              date > new Date() || date < new Date("1900-01-01")
+                            }
+                          />
+                        </PopoverContent>
+                      </Popover>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="ayn"
+                  render={({ field }) => (
+                    <FormItem className="basis-1/3">
+                      <FormLabel className="flex items-center gap-1">
+                        Ayn
+                      </FormLabel>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
               <FormField
                 control={form.control}
                 name="djs"
@@ -402,33 +391,37 @@ const UpdateRave = ({ rave }: UpdateRaveProps) => {
                   </FormItem>
                 )}
               />
-
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Loveland" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="location"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Location</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Sloterpark - Amsterdam" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <div className="flex gap-2">
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem className="basis-1/2">
+                      <FormLabel>Name</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Loveland" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="location"
+                  render={({ field }) => (
+                    <FormItem className="basis-1/2">
+                      <FormLabel>Location</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Sloterpark - Amsterdam"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
               <FormField
                 control={form.control}
                 name="genre"
@@ -457,7 +450,7 @@ const UpdateRave = ({ rave }: UpdateRaveProps) => {
                     control={form.control}
                     name="candy"
                     render={({ field }) => (
-                      <FormItem>
+                      <FormItem className="basis-2/3">
                         <FormLabel>Candy</FormLabel>
                         <FormControl>
                           <Input placeholder="Love" {...field} />
@@ -470,7 +463,7 @@ const UpdateRave = ({ rave }: UpdateRaveProps) => {
                     control={form.control}
                     name="quantity"
                     render={({ field }) => (
-                      <FormItem>
+                      <FormItem className="basis-1/3">
                         <FormLabel>Quantity</FormLabel>
                         <FormControl>
                           <Input {...field} />
@@ -486,24 +479,6 @@ const UpdateRave = ({ rave }: UpdateRaveProps) => {
                 <Label>Rank</Label>
                 <StarRatingForm rating={rating} setRating={setRating} />
               </div>
-
-              <FormField
-                control={form.control}
-                name="anecdotes"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Anecdotes</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        placeholder="The night we met ARIELO"
-                        className="resize-none"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
             </div>
             <DrawerFooter className="px-0 my-2">
               <Button type="submit">Save changes</Button>

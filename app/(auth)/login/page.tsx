@@ -1,5 +1,4 @@
 import { Icons } from "@/components/icons";
-import Logo from "@/components/logo";
 import UserAuthForm from "@/components/user-auth-form";
 import { Metadata } from "next";
 

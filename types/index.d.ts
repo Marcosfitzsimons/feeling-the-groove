@@ -53,6 +53,10 @@ export type UpdateRavePayload = {
   date: string,
 }
 
+export type UpdateRaveMemoriesPayload = {
+  memories: string;
+}
+
 export type NavItem = {
   title: string
   link: string
