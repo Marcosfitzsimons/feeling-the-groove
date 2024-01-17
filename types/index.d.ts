@@ -19,7 +19,7 @@ export type Rave = {
   rank: number
   candy?: string | null
   quantity?: Decimal | null
-  anecdotes?: string | null
+  memories?: string | null
   djs: string
   date: Date
 }
@@ -34,7 +34,7 @@ export type RavePayload = {
   rank: number
   candy?: string | null
   quantity?: Decimal | null
-  anecdotes?: string | null
+  memories?: string | null
   djs: string
   date: string,
   author: { connect: AuthorConnect };
@@ -48,7 +48,7 @@ export type UpdateRavePayload = {
   rank: number
   candy?: string | null
   quantity?: Decimal | null
-  anecdotes?: string | null
+  memories?: string | null
   djs: string
   date: string,
 }

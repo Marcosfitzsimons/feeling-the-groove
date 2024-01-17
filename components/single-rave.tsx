@@ -3,8 +3,7 @@ import { Rave } from "@/types";
 import { StarRating } from "./ui/star-rating";
 import Image from "next/image";
 import UpdateRave from "./update-rave";
-import { Button } from "./ui/button";
-import { Icons } from "./icons";
+import RaveMemories from "./rave-memories";
 
 interface SingleRaveProps {
   rave: Rave;
@@ -84,32 +83,8 @@ const SingleRave = ({ rave }: SingleRaveProps) => {
               )}
             </div>
           </ul>
-          {rave.anecdotes && (
-            <div className="">
-              <div className="flex items-centar gap-1">
-                <p className="font-semibold">Memories</p>
-                <Button size="sm" variant="outline" className="h-6 text-xs">
-                  <Icons.edit className="w-3.5 h-3.5 mr-2" />
-                  Edit memories
-                </Button>
-              </div>
-              <div className="p-2 max-w-md flex flex-col gap-2">
-                <div className="flex items-center gap-1">
-                  <Image
-                    className=""
-                    src="/pin.png"
-                    alt="pin"
-                    width={20}
-                    height={20}
-                  />
-                  <p className="text-muted-foreground text-xs italic">
-                    Moments to remember...
-                  </p>
-                </div>
-                <p className="px-4">{rave.anecdotes}</p>
-              </div>
-            </div>
-          )}
+          {rave.memories && <RaveMemories memories={rave.memories} />}
+
           <UpdateRave rave={rave} />
         </div>
       </div>

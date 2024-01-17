@@ -75,7 +75,7 @@ model Rave {
     djs       String
     candy     String?
     quantity  Decimal? @db.Decimal(2, 1)
-    anecdotes String?
+    memories  String?
     rank      Int
     createdAt DateTime @default(now()) @map(name: "created_at")
     updatedAt DateTime @default(now()) @map(name: "updated_at")

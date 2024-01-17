@@ -61,18 +61,18 @@ const NewRaveForm = ({ nearestPastDate, user }: NewRaveFormProps) => {
       genre: "",
       candy: "",
       quantity: 1,
-      anecdotes: "",
+      memories: "",
     },
   });
 
   async function onSubmit(data: FormData) {
     setIsSubmitted(true);
 
-    const { candy, quantity, anecdotes, ...dataWithoutOptionalFields } = data;
+    const { candy, quantity, memories, ...dataWithoutOptionalFields } = data;
 
     const payload = {
       ...(data.candy && { candy: data.candy, quantity: data.quantity }),
-      ...(data.anecdotes && { anecdotes: data.anecdotes }),
+      ...(data.memories && { anecdotes: data.memories }),
       ...dataWithoutOptionalFields,
       date: convertToDBDate(data.date),
       rank: rating,
@@ -117,12 +117,12 @@ const NewRaveForm = ({ nearestPastDate, user }: NewRaveFormProps) => {
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-full max-w-4xl">
         <div className="flex flex-col gap-2 md:flex-row md:gap-4">
           <div className="flex flex-col gap-2 md:basis-1/2">
-            <div className="flex flex-col gap-2 md:flex md:gap-2 md:mt-1">
+            <div className="flex gap-2 mt-1">
               <FormField
                 control={form.control}
                 name="date"
                 render={({ field }) => (
-                  <FormItem className="flex flex-col basis-1/2">
+                  <FormItem className="basis-2/3">
                     <FormLabel
                       className={`${
                         dateSelected &&
@@ -140,7 +140,7 @@ const NewRaveForm = ({ nearestPastDate, user }: NewRaveFormProps) => {
                           <Button
                             variant={"outline"}
                             className={cn(
-                              "pl-3 text-left font-normal",
+                              "pl-3 text-left font-normal w-full",
                               !field.value && "text-muted-foreground"
                             )}
                           >
@@ -173,7 +173,7 @@ const NewRaveForm = ({ nearestPastDate, user }: NewRaveFormProps) => {
                 control={form.control}
                 name="ayn"
                 render={({ field }) => (
-                  <FormItem className="basis-1/2">
+                  <FormItem className="basis-1/3">
                     <FormLabel className="flex items-center gap-1">
                       Ayn
                       {dateSelected &&
@@ -275,7 +275,7 @@ const NewRaveForm = ({ nearestPastDate, user }: NewRaveFormProps) => {
                   control={form.control}
                   name="candy"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="basis-2/3">
                       <FormLabel>Candy</FormLabel>
                       <FormControl>
                         <Input placeholder="Love" {...field} />
@@ -292,7 +292,7 @@ const NewRaveForm = ({ nearestPastDate, user }: NewRaveFormProps) => {
                   control={form.control}
                   name="quantity"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="basis-1/3">
                       <FormLabel>Quantity</FormLabel>
                       <FormControl>
                         <Input {...field} />
@@ -311,10 +311,10 @@ const NewRaveForm = ({ nearestPastDate, user }: NewRaveFormProps) => {
 
             <FormField
               control={form.control}
-              name="anecdotes"
+              name="memories"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Anecdotes</FormLabel>
+                  <FormLabel>Memories</FormLabel>
                   <FormControl>
                     <Textarea
                       placeholder="The night we met ARIELO"

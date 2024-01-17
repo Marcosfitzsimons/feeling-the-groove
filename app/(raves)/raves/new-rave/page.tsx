@@ -50,7 +50,9 @@ const NewRavePage = async () => {
         />
       </div>
       <div className="h-screen mx-2 mt-4 md:hidden">
-        <h2 className="text-3xl font-semibold mb-4">Create New Rave</h2>
+        <h2 className="text-center text-3xl font-semibold mb-4">
+          Create New Rave
+        </h2>
         <NewRaveForm nearestPastDate={nearestPastDate} user={{ id: user.id }} />
       </div>
     </div>
