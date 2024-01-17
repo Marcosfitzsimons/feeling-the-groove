@@ -4,6 +4,7 @@ import { StarRating } from "./ui/star-rating";
 import Image from "next/image";
 import UpdateRave from "./update-rave";
 import RaveMemories from "./rave-memories";
+import AddRaveMemories from "./add-raves-memories";
 
 interface SingleRaveProps {
   rave: Rave;
@@ -86,7 +87,17 @@ const SingleRave = ({ rave }: SingleRaveProps) => {
           {rave.memories ? (
             <RaveMemories raveId={rave.id} memories={rave.memories} />
           ) : (
-            ""
+            <div className="">
+              <div className="flex items-centar gap-1">
+                <p className="font-semibold">Memories</p>
+              </div>
+
+              <div className="p-2 max-w-md flex flex-col gap-1">
+                <p className="text-sm ">There are no memories, add one!</p>
+
+                <AddRaveMemories raveId={rave.id} />
+              </div>
+            </div>
           )}
 
           <UpdateRave rave={rave} />
