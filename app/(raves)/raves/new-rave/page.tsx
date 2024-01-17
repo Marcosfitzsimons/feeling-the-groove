@@ -31,7 +31,7 @@ const NewRavePage = async () => {
       ? JSON.parse(collapsed.value)
       : undefined;
 
-  const nearestPastDate = await getNearestPastRave();
+  const nearestPastDate = await getNearestPastRave(user.id);
 
   return (
     <div>

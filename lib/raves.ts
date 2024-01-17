@@ -30,7 +30,7 @@ export const getRave = async (id: string) => {
       return formattedData as Rave
 }
 
-export const getNearestPastRave = async () => {
+export const getNearestPastRave = async (userId: string) => {
     const currentDate = new Date(); 
 
     const data = await db.rave.findMany({
@@ -39,6 +39,7 @@ export const getNearestPastRave = async () => {
       },
       take: 1, // Retrieve only the closest date
       where: {
+        authorId: userId, 
         date: {
           lt: currentDate, // Get dates less than the current date
         },
