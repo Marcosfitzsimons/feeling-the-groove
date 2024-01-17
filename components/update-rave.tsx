@@ -378,19 +378,35 @@ const UpdateRave = ({ rave }: UpdateRaveProps) => {
                   )}
                 />
               </div>
-              <FormField
-                control={form.control}
-                name="djs"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Djs</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Nick Warren" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <div className="flex gap-2">
+                <FormField
+                  control={form.control}
+                  name="djs"
+                  render={({ field }) => (
+                    <FormItem className="basis-1/2">
+                      <FormLabel>Djs</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Nick Warren" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="genre"
+                  render={({ field }) => (
+                    <FormItem className="basis-1/2">
+                      <FormLabel>Genre</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Progressive" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
               <div className="flex gap-2">
                 <FormField
                   control={form.control}
@@ -422,19 +438,7 @@ const UpdateRave = ({ rave }: UpdateRaveProps) => {
                   )}
                 />
               </div>
-              <FormField
-                control={form.control}
-                name="genre"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Genre</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Progressive" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+
               <div className="flex items-center space-x-2">
                 <Switch
                   id="airplane-mode"
