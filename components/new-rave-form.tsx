@@ -72,7 +72,7 @@ const NewRaveForm = ({ nearestPastDate, user }: NewRaveFormProps) => {
 
     const payload = {
       ...(data.candy && { candy: data.candy, quantity: data.quantity }),
-      ...(data.memories && { anecdotes: data.memories }),
+      ...(data.memories && { memories: data.memories }),
       ...dataWithoutOptionalFields,
       date: convertToDBDate(data.date),
       rank: rating,
