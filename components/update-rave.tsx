@@ -4,7 +4,7 @@ import { Rave } from "@/types";
 import { Button } from "./ui/button";
 import { Icons } from "./icons";
 
-import { raveUpdateSchema } from "@/validations/rave";
+import { raveUpdateSchema } from "@/lib/validations/rave";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
